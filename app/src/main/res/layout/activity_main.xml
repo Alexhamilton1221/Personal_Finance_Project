@@ -10,7 +10,7 @@
 
     <!-- Title Text -->
     <TextView
-        android:id="@+id/textViewTitle"
+        android:id="@+id/textViewTitleName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="ShopUnityHub"
@@ -25,50 +25,44 @@
 
     <!-- Username Entry -->
     <EditText
-        android:id="@+id/username_entry"
+        android:id="@+id/email_entry_login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="75dp"
         android:layout_marginBottom="8dp"
         android:ems="10"
         android:inputType="text"
-        android:hint="Username"
-        app:layout_constraintBottom_toTopOf="@+id/password_entry"
+        android:hint="Email"
+        app:layout_constraintBottom_toTopOf="@+id/password_entry_login"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_chainStyle="packed" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewTitleName" />
 
     <!-- Password Entry -->
     <EditText
-        android:id="@+id/password_entry"
+        android:id="@+id/password_entry_login"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginBottom="8dp"
         android:ems="10"
         android:inputType="textPassword"
         android:hint="Password"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/username_entry" />
+        app:layout_constraintTop_toBottomOf="@+id/email_entry_login" />
 
     <!-- Login Button -->
     <Button
         android:id="@+id/buttonLogin"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="8dp"
         android:text="Login"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_entry"
-        app:layout_constraintBottom_toTopOf="@+id/textViewCreateAccount"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"/>
-
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/password_entry_login" />
     <!-- Create Account Text -->
     <TextView
         android:id="@+id/textViewCreateAccount"
@@ -79,8 +73,6 @@
         android:clickable="true"
         android:text="Don't have an account? Create one"
         android:gravity="center"
-        app:fontFamily="@font/spartanbold"
-        app:layout_constraintBottom_toTopOf="@+id/buttonCreateAccount"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
@@ -91,14 +83,11 @@
         android:id="@+id/buttonCreateAccount"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="8dp"
         android:text="Create Account"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCreateAccount"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewCreateAccount" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
