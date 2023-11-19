@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "301380556347",
+    "project_id": "shopunityhub",
+    "storage_bucket": "shopunityhub.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:301380556347:android:38a0c92523e16f7cfaee1e",
+        "android_client_info": {
+          "package_name": "com.example.personal_finance_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCphEQNTgSsRVoHgsi55EohbqHXVVsncsQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
