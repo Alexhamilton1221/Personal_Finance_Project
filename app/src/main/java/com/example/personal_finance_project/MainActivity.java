@@ -2,6 +2,7 @@ package com.example.personal_finance_project;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import androidx.annotation.NonNull;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -10,7 +11,9 @@ import android.widget.Toast;
 import android.content.Intent;
 
 import com.google.firebase.auth.FirebaseAuth;
-
+import com.google.firebase.auth.AuthResult;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 public class MainActivity extends AppCompatActivity {
 
     private EditText userName, userPassword;
@@ -29,9 +32,26 @@ public class MainActivity extends AppCompatActivity {
         login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String username=userName.getText().toString(); String password=userPassword.getText().toString();
-                if (AuthenticationFunctions.validate(username,password)) {
-                    //Check database for a user.
+                String username = userName.getText().toString();
+                String password = userPassword.getText().toString();
+
+                if (AuthenticationFunctions.validate(username, password)) {
+                    // Check if the user is present in Firebase Authentication
+                    firebaseAuth.signInWithEmailAndPassword(username, password)
+                            .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                                @Override
+                                public void onComplete(@NonNull Task<AuthResult> task) {
+                                    if (task.isSuccessful()) {
+                                        // Login successful, user is present
+                                        Toast.makeText(MainActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
+                                        startActivity(new Intent(MainActivity.this, UserMenu.class));
+
+                                    } else {
+                                        // Login failed, handle the error
+                                        Toast.makeText(MainActivity.this, "Login failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
+                                    }
+                                }
+                            });
                 }
             }
         });
