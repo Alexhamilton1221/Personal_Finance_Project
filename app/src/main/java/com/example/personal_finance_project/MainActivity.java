@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
                                     if (task.isSuccessful()) {
                                         // Login successful, user is present
                                         Toast.makeText(MainActivity.this, "Login successful", Toast.LENGTH_SHORT).show();
-                                        startActivity(new Intent(MainActivity.this, UserMenu.class));
+                                        startActivity(new Intent(MainActivity.this, MenuActivity.class));
 
                                     } else {
                                         // Login failed, handle the error

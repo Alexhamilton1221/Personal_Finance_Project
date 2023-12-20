@@ -4,35 +4,51 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".UserMenu"
+    tools:context=".MenuActivity"
     android:background="@drawable/menu"
     >
 
+    <!-- Title Text -->
     <TextView
         android:id="@+id/textViewTitleWelcome"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Welcome $user$"
+        android:text="Welcome"
         android:textSize="24sp"
         app:fontFamily="@font/spartanbold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.447"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.15" />
+        app:layout_constraintVertical_bias="0.151" />
 
+    <!-- Open List Button -->
     <Button
-        android:id="@+id/buttonManage"
+        android:id="@+id/buttonOpenList"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="8dp"
-        android:text="Manage/View Shopping List"
+        android:layout_marginTop="52dp"
+        android:text="Add to List"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitleWelcome" />
 
+    <!-- View Group Button -->
+    <Button
+        android:id="@+id/buttonViewGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:text="View Group"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/buttonOpenList" />
+
+
+
+    <!-- Username Entry -->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

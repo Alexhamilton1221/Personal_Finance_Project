@@ -53,14 +53,28 @@
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/email_entry_register" />
 
+  <!-- Display Name Entry -->
+  <EditText
+      android:id="@+id/displayname_entry_register"
+      android:layout_width="0dp"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="8dp"
+      android:ems="10"
+      android:inputType="text"
+      android:hint="Name"
+      app:layout_constraintBottom_toTopOf="@+id/buttonRegister"
+      app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintStart_toStartOf="parent"
+      app:layout_constraintTop_toBottomOf="@+id/password_entry_register" />
+
   <Button
       android:id="@+id/buttonRegister"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginTop="24dp"
-      android:layout_marginBottom="8dp"
+      android:layout_marginTop="68dp"
       android:text="Register Account"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/password_entry_register" />
 
@@ -68,13 +82,12 @@
       android:id="@+id/buttonBack"
       android:layout_width="0dp"
       android:layout_height="wrap_content"
-      android:layout_marginTop="24dp"
-      android:layout_marginBottom="8dp"
+      android:layout_marginTop="76dp"
       android:text="Back"
       app:layout_constraintEnd_toEndOf="parent"
+      app:layout_constraintHorizontal_bias="0.0"
       app:layout_constraintStart_toStartOf="parent"
       app:layout_constraintTop_toBottomOf="@+id/buttonRegister" />
-
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
