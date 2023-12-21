@@ -21,11 +21,10 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MenuActivity extends AppCompatActivity {
 
-    private Button open;
+    private Button open,view_group;
     private DatabaseReference firebaseRef;
     private TextView title;
 
-//    private DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReferenceFromUrl("https://shopunityhub-default-rtdb.firebaseio.com/");
 
     @Override
 
@@ -37,25 +36,19 @@ public class MenuActivity extends AppCompatActivity {
         //Set title
         set_title();
 
-
-
-
-//        firebaseRef = FirebaseDatabase.getInstance().getReference("test");
-//
-//
-//        firebaseRef.setValue("working?");
-
     }
 
 
 
-            private void showToast(String message) {
-                Toast.makeText(MenuActivity.this, message, Toast.LENGTH_SHORT).show();
-            }
+    private void showToast(String message) {
+        Toast.makeText(MenuActivity.this, message, Toast.LENGTH_SHORT).show();
+    }
 
     private void setupUIViews(){
         title = (TextView) findViewById(R.id.textViewTitleWelcome);
         open = (Button) findViewById(R.id.buttonOpenList);
+        view_group = (Button) findViewById(R.id.buttonViewGroup);
+
     }
 
     private void set_title(){
