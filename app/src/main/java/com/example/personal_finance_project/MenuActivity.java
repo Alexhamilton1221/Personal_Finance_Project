@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -36,13 +37,27 @@ public class MenuActivity extends AppCompatActivity {
         //Set title
         set_title();
 
+//        new DatabaseAccess().execute(); //testing
+
+        view_group.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                view_group();
+            }
+        });
     }
 
+    private void view_group(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String userEmail = user.getEmail();
 
-
-    private void showToast(String message) {
-        Toast.makeText(MenuActivity.this, message, Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MenuActivity.this, GroupActivity.class);
+            intent.putExtra("userEmail", userEmail);
+            startActivity(intent);
+        }
     }
+
 
     private void setupUIViews(){
         title = (TextView) findViewById(R.id.textViewTitleWelcome);

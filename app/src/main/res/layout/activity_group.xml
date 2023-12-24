@@ -23,6 +23,7 @@
 
     <!-- List of Group Members-->
     <ListView
+        android:id="@+id/listViewgroupmembers"
         android:layout_width="409dp"
         android:layout_height="587dp"
         tools:layout_editor_absoluteX="1dp"
