@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MenuActivity"
-    android:background="@drawable/menu"
-    >
+    android:background="@drawable/login"
+    tools:context=".MenuActivity">
 
     <!-- Title Text -->
     <TextView
@@ -45,7 +44,6 @@
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonOpenList" />
-
 
 
     <!-- Username Entry -->

@@ -37,8 +37,6 @@ public class MenuActivity extends AppCompatActivity {
         //Set title
         set_title();
 
-//        new DatabaseAccess().execute(); //testing
-
         view_group.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
