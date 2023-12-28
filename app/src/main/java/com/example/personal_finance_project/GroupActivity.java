@@ -27,7 +27,7 @@ public class GroupActivity extends AppCompatActivity {
         String userEmail = getIntent().getStringExtra("userEmail");
 
 
-        DatabaseAccess databaseAccess = new DatabaseAccess(this, list_group);
+        DatabaseAccess databaseAccess = new DatabaseAccess(this, list_group, "group_tab");
         databaseAccess.execute(userEmail);
 
         back.setOnClickListener(new View.OnClickListener() {

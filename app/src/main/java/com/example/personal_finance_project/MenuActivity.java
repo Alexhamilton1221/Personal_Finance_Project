@@ -22,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MenuActivity extends AppCompatActivity {
 
-    private Button open,view_group;
+    private Button open,view_group,logout;
     private DatabaseReference firebaseRef;
     private TextView title;
 
@@ -43,8 +43,21 @@ public class MenuActivity extends AppCompatActivity {
                 view_group();
             }
         });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                logout();
+            }
+        });
+
+
+
     }
 
+    private void logout(){
+        startActivity(new Intent(MenuActivity.this, MainActivity.class));
+    }
     private void view_group(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -61,7 +74,7 @@ public class MenuActivity extends AppCompatActivity {
         title = (TextView) findViewById(R.id.textViewTitleWelcome);
         open = (Button) findViewById(R.id.buttonOpenList);
         view_group = (Button) findViewById(R.id.buttonViewGroup);
-
+        logout = (Button) findViewById(R.id.buttonLogout);
     }
 
     private void set_title(){

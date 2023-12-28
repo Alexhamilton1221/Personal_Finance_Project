@@ -12,25 +12,22 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
 public class DatabaseAccess extends AsyncTask<String, Void, List<String>> {
     private Context context;
     private ListView listView;
+    private String queryType;
 
-    // Constructor to pass context and listView
-    public DatabaseAccess(Context context, ListView listView) {
+    public DatabaseAccess(Context context, ListView listView, String queryType) {
         this.context = context;
         this.listView = listView;
+        this.queryType = queryType;
     }
 
     @Override
     protected List<String> doInBackground(String... userEmails) {
-        // Log the passed-in email
-        Log.d("MyApp", "User Email Passed In: " + userEmails[0]);
-
         List<String> dataList = new ArrayList<>();
 
         try {
@@ -41,41 +38,15 @@ public class DatabaseAccess extends AsyncTask<String, Void, List<String>> {
 
             Connection connection = DriverManager.getConnection(jdbcUrl, username, password);
 
-            // First Query: Get group_id for the specified email
-            String emailQuery = "SELECT group_id FROM dbo.[user] WHERE email=?";
-            try (PreparedStatement emailStatement = connection.prepareStatement(emailQuery)) {
-                emailStatement.setString(1, userEmails[0]);  // Assuming userEmails[0] contains the email
-                ResultSet emailResult = emailStatement.executeQuery();
-
-                // Check if there is a result
-                if (emailResult.next()) {
-                    int groupId = emailResult.getInt("group_id");
-
-                    // Log the result of the first query
-                    Log.d("MyApp", "Group ID for Email " + userEmails[0] + ": " + groupId);
-
-                    // Second Query: Get user details for the specified email and group_id
-                    String userQuery = "SELECT * FROM dbo.[user] WHERE group_id=? ORDER BY group_id";
-                    try (PreparedStatement userStatement = connection.prepareStatement(userQuery)) {
-                        userStatement.setInt(1, groupId);
-                        ResultSet resultSet = userStatement.executeQuery();
-
-                        // Process the result set and populate the dataList
-                        while (resultSet.next()) {
-                            String userEmail = resultSet.getString("email");
-                            int userGroupId = resultSet.getInt("group_id");
-
-                            String item = "Email: " + userEmail + ", Group ID: " + userGroupId;
-                            dataList.add(item);
-                        }
-                    }
-                }
-
-                // Close resources for the first query
-                emailResult.close();
+            if ("group_tab".equals(queryType)) {
+                handleGroupTabQuery(userEmails[0], dataList, connection);
+            } else if ("another_tab".equals(queryType)) {
+                handleAnotherTabQuery(userEmails[0], dataList, connection);
+            } else {
+                // Handle other query types if needed
+                // ...
             }
 
-            // Close resources for the connection
             connection.close();
 
         } catch (SQLException | ClassNotFoundException e) {
@@ -89,12 +60,45 @@ public class DatabaseAccess extends AsyncTask<String, Void, List<String>> {
     @Override
     protected void onPostExecute(List<String> result) {
         super.onPostExecute(result);
-        // Update the ListView with the data obtained from the background task
         if (result != null) {
             ArrayAdapter<String> adapter = new ArrayAdapter<>(context, android.R.layout.simple_list_item_1, result);
             listView.setAdapter(adapter);
         } else {
             Toast.makeText(context, "Data retrieval failed", Toast.LENGTH_SHORT).show();
         }
+    }
+
+    private void handleGroupTabQuery(String userEmail, List<String> dataList, Connection connection) throws SQLException {
+        String emailQuery = "SELECT group_id FROM dbo.[appuser] WHERE email=?";
+        try (PreparedStatement emailStatement = connection.prepareStatement(emailQuery)) {
+            emailStatement.setString(1, userEmail);
+            ResultSet emailResult = emailStatement.executeQuery();
+
+            if (emailResult.next()) {
+                int groupId = emailResult.getInt("group_id");
+                Log.d("MyApp", "Group ID for Email " + userEmail + ": " + groupId);
+
+                String userQuery = "SELECT * FROM dbo.[appuser] WHERE group_id=? ORDER BY group_id";
+                try (PreparedStatement userStatement = connection.prepareStatement(userQuery)) {
+                    userStatement.setInt(1, groupId);
+                    ResultSet resultSet = userStatement.executeQuery();
+
+                    while (resultSet.next()) {
+                        String userEmailResult = resultSet.getString("email");
+                        int userGroupId = resultSet.getInt("group_id");
+
+                        String item = "Email: " + userEmailResult + ", Group ID: " + userGroupId;
+                        dataList.add(item);
+                    }
+                }
+            }
+
+            emailResult.close();
+        }
+    }
+
+    private void handleAnotherTabQuery(String userEmail, List<String> dataList, Connection connection) {
+        // Implement logic for another query type
+        // ...
     }
 }
