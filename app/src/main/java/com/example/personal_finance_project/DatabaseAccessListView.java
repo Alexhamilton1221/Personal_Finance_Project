@@ -15,12 +15,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DatabaseAccess extends AsyncTask<String, Void, List<String>> {
+public class DatabaseAccessListView extends AsyncTask<String, Void, List<String>> {
     private Context context;
     private ListView listView;
     private String queryType;
 
-    public DatabaseAccess(Context context, ListView listView, String queryType) {
+    public DatabaseAccessListView(Context context, ListView listView, String queryType) {
         this.context = context;
         this.listView = listView;
         this.queryType = queryType;

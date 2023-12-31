@@ -6,11 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 
 public class GroupActivity extends AppCompatActivity {
 
@@ -27,8 +23,8 @@ public class GroupActivity extends AppCompatActivity {
         String userEmail = getIntent().getStringExtra("userEmail");
 
 
-        DatabaseAccess databaseAccess = new DatabaseAccess(this, list_group, "group_tab");
-        databaseAccess.execute(userEmail);
+        DatabaseAccessListView databaseAccessListView = new DatabaseAccessListView(this, list_group, "group_tab");
+        databaseAccessListView.execute(userEmail);
 
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -38,8 +34,6 @@ public class GroupActivity extends AppCompatActivity {
             }
         });
 
-
-
     }
     private void return_menu(){
         startActivity(new Intent(GroupActivity.this, MenuActivity.class));
@@ -48,6 +42,5 @@ public class GroupActivity extends AppCompatActivity {
     private void setupUIViews(){
         list_group = (ListView) findViewById(R.id.listViewgroupmembers);
         back = (Button) findViewById(R.id.buttonBack);
-
     }
 }
