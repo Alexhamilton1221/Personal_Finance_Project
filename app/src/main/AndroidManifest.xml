@@ -16,6 +16,12 @@
         android:theme="@style/Theme.Personal_Finance_Project"
         tools:targetApi="31">
         <activity
+            android:name=".ManualInsertActivity"
+            android:exported="false" />
+        <activity
+            android:name=".SelectInsertActivity"
+            android:exported="false" />
+        <activity
             android:name=".ViewListActivity"
             android:exported="false" />
         <activity

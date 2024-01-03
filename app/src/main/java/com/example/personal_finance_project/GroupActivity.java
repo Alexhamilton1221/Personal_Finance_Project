@@ -12,6 +12,8 @@ public class GroupActivity extends AppCompatActivity {
 
     private ListView list_group;
     private Button back;
+    private String userEmail;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,8 +22,7 @@ public class GroupActivity extends AppCompatActivity {
         setupUIViews();
 
         // Retrieve user's email from Intent
-        String userEmail = getIntent().getStringExtra("userEmail");
-
+        userEmail = getIntent().getStringExtra("userEmail");
 
         DatabaseAccessListView databaseAccessListView = new DatabaseAccessListView(this, list_group, "group_tab");
         databaseAccessListView.execute(userEmail);
@@ -30,17 +31,24 @@ public class GroupActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 return_menu();
-
             }
         });
-
     }
-    private void return_menu(){
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Recall the code when the activity is brought back to the foreground
+        DatabaseAccessListView databaseAccessListView = new DatabaseAccessListView(this, list_group, "group_tab");
+        databaseAccessListView.execute(userEmail);
+    }
+
+    private void return_menu() {
         startActivity(new Intent(GroupActivity.this, MenuActivity.class));
     }
 
-    private void setupUIViews(){
-        list_group = (ListView) findViewById(R.id.listViewgroupmembers);
-        back = (Button) findViewById(R.id.buttonBack);
+    private void setupUIViews() {
+        list_group = findViewById(R.id.listViewgroupmembers);
+        back = findViewById(R.id.buttonBack);
     }
 }

@@ -62,7 +62,9 @@
         android:text="Login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password_entry_login" />
+        app:layout_constraintTop_toBottomOf="@+id/password_entry_login"
+        app:layout_constraintWidth_percent="0.43"
+        />
     <!-- Create Account Text -->
     <TextView
         android:id="@+id/textViewCreateAccount"
@@ -88,6 +90,7 @@
         android:text="Create Account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCreateAccount" />
+        app:layout_constraintTop_toBottomOf="@+id/textViewCreateAccount"
+        app:layout_constraintWidth_percent="0.43"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
