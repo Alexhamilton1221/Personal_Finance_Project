@@ -35,8 +35,8 @@ public class DatabaseAccessRecyclerView extends AsyncTask<String, Void, List<Sho
         List<ShoppingItem> dataList = new ArrayList<>();
 
         try {
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            String jdbcUrl = "jdbc:jtds:sqlserver://personal-finance.ctthoc6soess.us-east-2.rds.amazonaws.com:1433;databaseName=finance_objects";
+            Class.forName("com.mysql.jdbc.Driver");
+            String jdbcUrl = "jdbc:mysql://personal-finance-free.ctthoc6soess.us-east-2.rds.amazonaws.com:3306/finance";
             String username = "admin";
             String password = "Chufa4677";
 
@@ -70,13 +70,7 @@ public class DatabaseAccessRecyclerView extends AsyncTask<String, Void, List<Sho
             if (context != null) {
                 Log.d("MyApp", "Updating adapter with result size: " + result.size());
                 adapter.setItems(result);
-
                 recyclerView.post(() -> adapter.notifyDataSetChanged());
-
-            /*((Activity) context).runOnUiThread(() ->
-            {
-                adapter.notifyDataSetChanged();
-            });*/
 
                 Log.d("MyApp", "Adapter updated successfully");
             } else {
@@ -99,7 +93,7 @@ public class DatabaseAccessRecyclerView extends AsyncTask<String, Void, List<Sho
 
     private void handleGroupTabQuery(String userEmail, List<ShoppingItem> dataList, Connection connection) throws SQLException {
         try {
-            String emailQuery = "SELECT group_id FROM dbo.[appuser] WHERE email=?";
+            String emailQuery = "SELECT group_id FROM appuser WHERE email=?";
             try (PreparedStatement emailStatement = connection.prepareStatement(emailQuery)) {
                 emailStatement.setString(1, userEmail);
                 ResultSet emailResult = emailStatement.executeQuery();
@@ -108,7 +102,7 @@ public class DatabaseAccessRecyclerView extends AsyncTask<String, Void, List<Sho
                     int groupId = emailResult.getInt("group_id");
                     Log.d("MyApp", "Group ID for Email " + userEmail + ": " + groupId);
 
-                    String itemQuery = "SELECT * FROM dbo.[items] WHERE group_id=? ORDER BY group_id";
+                    String itemQuery = "SELECT * FROM items WHERE group_id=? ORDER BY group_id";
                     try (PreparedStatement itemStatement = connection.prepareStatement(itemQuery)) {
                         itemStatement.setInt(1, groupId);
                         ResultSet resultSet = itemStatement.executeQuery();

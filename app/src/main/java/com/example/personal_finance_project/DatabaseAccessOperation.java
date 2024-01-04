@@ -45,8 +45,8 @@ public class DatabaseAccessOperation extends AsyncTask<String, Void, Integer> {
         int result = -1;
 
         try {
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            String jdbcUrl = "jdbc:jtds:sqlserver://personal-finance.ctthoc6soess.us-east-2.rds.amazonaws.com:1433;databaseName=finance_objects";
+            Class.forName("com.mysql.jdbc.Driver");
+            String jdbcUrl = "jdbc:mysql://personal-finance-free.ctthoc6soess.us-east-2.rds.amazonaws.com:3306/finance";
             String username = "admin";
             String password = "Chufa4677";
 
@@ -65,7 +65,8 @@ public class DatabaseAccessOperation extends AsyncTask<String, Void, Integer> {
 
 
     private int findUserGroupId(String userEmail, Connection connection) throws SQLException {
-        String query = "SELECT group_id FROM dbo.appuser WHERE email = ?";
+        String query = "SELECT group_id FROM `appuser` WHERE email = ?";
+
         try (PreparedStatement emailStatement = connection.prepareStatement(query)) {
             emailStatement.setString(1, userEmail);
             ResultSet emailResult = emailStatement.executeQuery();
@@ -82,7 +83,8 @@ public class DatabaseAccessOperation extends AsyncTask<String, Void, Integer> {
     }
 
     private static int findHighestItemId(Connection connection) throws SQLException {
-        String query = "SELECT MAX(item_id) AS max_id FROM dbo.items";
+        String query = "SELECT MAX(item_id) AS max_id FROM items";
+
 
         try (PreparedStatement statement = connection.prepareStatement(query)) {
             ResultSet resultSet = statement.executeQuery();
@@ -96,8 +98,7 @@ public class DatabaseAccessOperation extends AsyncTask<String, Void, Integer> {
     }
 
     private int insertRecord(String userEmail, Connection connection) throws SQLException {
-        String query = "INSERT INTO dbo.items (item_id, group_id, name, price, quantity) VALUES (?, ?, ?, ?, ?)";
-
+        String query = "INSERT INTO items (item_id, group_id, name, price, quantity) VALUES (?, ?, ?, ?, ?)";
 
         int groupId=findUserGroupId(userEmail,connection);
         int newItemId = findHighestItemId(connection) + 1;

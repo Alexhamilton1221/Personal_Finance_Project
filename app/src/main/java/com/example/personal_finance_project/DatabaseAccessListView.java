@@ -31,8 +31,9 @@ public class DatabaseAccessListView extends AsyncTask<String, Void, List<String>
         List<String> dataList = new ArrayList<>();
 
         try {
-            Class.forName("net.sourceforge.jtds.jdbc.Driver");
-            String jdbcUrl = "jdbc:jtds:sqlserver://personal-finance.ctthoc6soess.us-east-2.rds.amazonaws.com:1433;databaseName=finance_objects";
+            Class.forName("com.mysql.jdbc.Driver");
+            String jdbcUrl = "jdbc:mysql://personal-finance-free.ctthoc6soess.us-east-2.rds.amazonaws.com:3306/finance";
+
             String username = "admin";
             String password = "Chufa4677";
 
@@ -69,7 +70,7 @@ public class DatabaseAccessListView extends AsyncTask<String, Void, List<String>
     }
 
     private void handleGroupTabQuery(String userEmail, List<String> dataList, Connection connection) throws SQLException {
-        String emailQuery = "SELECT group_id FROM dbo.[appuser] WHERE email=?";
+        String emailQuery = "SELECT group_id FROM `appuser` WHERE email = ?";
         try (PreparedStatement emailStatement = connection.prepareStatement(emailQuery)) {
             emailStatement.setString(1, userEmail);
             ResultSet emailResult = emailStatement.executeQuery();
@@ -78,7 +79,8 @@ public class DatabaseAccessListView extends AsyncTask<String, Void, List<String>
                 int groupId = emailResult.getInt("group_id");
                 Log.d("MyApp", "Group ID for Email " + userEmail + ": " + groupId);
 
-                String userQuery = "SELECT * FROM dbo.[appuser] WHERE group_id=? ORDER BY group_id";
+                String userQuery = "SELECT * FROM appuser WHERE group_id=? ORDER BY group_id";
+
                 try (PreparedStatement userStatement = connection.prepareStatement(userQuery)) {
                     userStatement.setInt(1, groupId);
                     ResultSet resultSet = userStatement.executeQuery();
