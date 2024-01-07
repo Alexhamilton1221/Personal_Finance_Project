@@ -45,15 +45,19 @@ public class ManageGroupActivity extends AppCompatActivity {
     private void create_group() {
         String userEmail = getIntent().getStringExtra("userEmail");
 
-
         Intent intent = (new Intent(ManageGroupActivity.this, CreateGroupActivity.class));
         intent.putExtra("userEmail", userEmail);
         startActivity(intent);
 
-
     }
 
     private void join_group() {
+        String userEmail = getIntent().getStringExtra("userEmail");
+
+        Intent intent = (new Intent(ManageGroupActivity.this, JoinGroupActivity.class));
+        intent.putExtra("userEmail", userEmail);
+        startActivity(intent);
+
     }
 
     private void return_menu() {
