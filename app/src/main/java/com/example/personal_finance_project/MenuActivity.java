@@ -22,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class MenuActivity extends AppCompatActivity {
 
-    private Button view_list,view_group,logout;
+    private Button view_list,view_group,join_group,logout;
     private TextView title;
 
 
@@ -57,11 +57,30 @@ public class MenuActivity extends AppCompatActivity {
             }
         });
 
+        join_group.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                join_group();
+            }
+        });
+
     }
 
     private void logout(){
         startActivity(new Intent(MenuActivity.this, MainActivity.class));
     }
+
+    private void join_group(){
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            String userEmail = user.getEmail();
+
+            Intent intent = new Intent(MenuActivity.this, ManageGroupActivity.class);
+            intent.putExtra("userEmail", userEmail);
+            startActivity(intent);
+        }
+    }
+
     private void view_group(){
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
@@ -88,6 +107,7 @@ public class MenuActivity extends AppCompatActivity {
         view_list = (Button) findViewById(R.id.buttonViewList);
         view_group = (Button) findViewById(R.id.buttonViewGroup);
         logout = (Button) findViewById(R.id.buttonLogout);
+        join_group = (Button) findViewById(R.id.buttonJoinGroup);
     }
 
     private void set_title(){

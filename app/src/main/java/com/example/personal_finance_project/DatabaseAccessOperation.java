@@ -1,5 +1,7 @@
 package com.example.personal_finance_project;
 
+import static java.sql.Types.NULL;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -52,8 +54,15 @@ public class DatabaseAccessOperation extends AsyncTask<String, Void, Integer> {
 
             try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password)) {
                 if ("insert_shopping_item".equals(queryType)) {
-                    result = insertRecord(userEmails[0], connection);
+                    result = insertItemRecord(userEmails[0], connection);
                 }
+                else if ("create_group".equals(queryType)){
+                    result = insertGroupRecord(userEmails[0], connection);
+                }
+                else if ("register".equals(queryType)){
+                    result = register_user(userEmails[0], connection);
+                }
+
             }
         } catch (SQLException | ClassNotFoundException e) {
             e.printStackTrace();
@@ -63,6 +72,33 @@ public class DatabaseAccessOperation extends AsyncTask<String, Void, Integer> {
         return result;
     }
 
+    private int register_user(String userEmail, Connection connection) throws SQLException {
+
+        String query = "INSERT INTO appuser (email, group_id) VALUES (?,?)";
+
+
+        int groupId=1;
+
+        try (PreparedStatement insertStatement = connection.prepareStatement(query)) {
+            insertStatement.setString(1, userEmail);
+            insertStatement.setInt(2, groupId);
+
+            // Log the values being used for the insert
+            Log.d("Register user", "Values for insert: "+ userEmail + groupId);
+
+            // Execute the insert query
+            int rowsAffected = insertStatement.executeUpdate();
+
+            // Log the number of rows affected
+            Log.d("InsertGroup", "Rows affected: " + rowsAffected);
+
+            // Now move current user into group
+            join_group(userEmail,groupId,connection);
+
+            return 0;
+
+        }
+    }
 
     private int findUserGroupId(String userEmail, Connection connection) throws SQLException {
         String query = "SELECT group_id FROM `appuser` WHERE email = ?";
@@ -97,7 +133,22 @@ public class DatabaseAccessOperation extends AsyncTask<String, Void, Integer> {
         }
     }
 
-    private int insertRecord(String userEmail, Connection connection) throws SQLException {
+    private static int findHighestGroupId(Connection connection) throws SQLException {
+        String query = "SELECT MAX(group_id) AS max_id FROM group_table";
+
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                return resultSet.getInt("max_id");
+            } else {
+                return 0; // Return 0 if there are no existing records
+            }
+        }
+    }
+
+
+    private int insertItemRecord(String userEmail, Connection connection) throws SQLException {
         String query = "INSERT INTO items (item_id, group_id, name, price, quantity) VALUES (?, ?, ?, ?, ?)";
 
         int groupId=findUserGroupId(userEmail,connection);
@@ -143,5 +194,62 @@ public class DatabaseAccessOperation extends AsyncTask<String, Void, Integer> {
 
     }
 
+    private int insertGroupRecord(String userEmail, Connection connection) throws SQLException {
+        String query = "INSERT INTO group_table (group_id, group_name) VALUES (?,?)";
+
+        int groupId=findHighestGroupId(connection) + 1;
+        String name = nameEditText.getText().toString().trim();
+
+
+
+
+        try (PreparedStatement insertStatement = connection.prepareStatement(query)) {
+            insertStatement.setInt(1, groupId);
+            insertStatement.setString(2, name);
+
+
+            // Log the values being used for the insert
+            Log.d("InsertGroup", "Values for insert: "+ groupId + name);
+
+            // Execute the insert query
+            int rowsAffected = insertStatement.executeUpdate();
+
+            // Log the number of rows affected
+            Log.d("InsertGroup", "Rows affected: " + rowsAffected);
+
+            // Now move current user into group
+            join_group(userEmail,groupId,connection);
+
+            return 0;
+
+    }
 
 }
+    private int join_group(String userEmail, int groupId, Connection connection) throws SQLException {
+        String query = "UPDATE appuser SET group_id = ? WHERE email = ?";
+
+        try (PreparedStatement updateStatement = connection.prepareStatement(query)) {
+            // Set values for parameters
+            updateStatement.setInt(1, groupId);
+            updateStatement.setString(2, userEmail);
+
+            // Log the values being used for the update
+            Log.d("JoinGroup", "Values for update: Group ID - " + groupId + ", Email - " + userEmail);
+
+            // Execute the update query
+            int rowsAffected = updateStatement.executeUpdate();
+
+            // Log the number of rows affected
+            Log.d("JoinGroup", "Rows affected: " + rowsAffected);
+
+
+            return rowsAffected;
+
+        } catch (SQLException e) {
+            // Handle exceptions
+            Log.e("JoinGroup", "Error joining group: " + e.getMessage());
+            throw e;
+        }
+    }
+
+    }

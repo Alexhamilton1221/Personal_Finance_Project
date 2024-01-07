@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
 
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements DatabaseAccessOperation.OnTaskCompleteListener{
 
     private EditText userName, userPassword, userDispName;
     private Button register,back;
@@ -98,12 +98,30 @@ public class RegisterActivity extends AppCompatActivity {
                                             }
                                         }
                                     });
+
+                            // Register into database
+                            register_user(username);
+
                         } else {
                             AuthenticationFunctions.showErrorMessage(RegisterActivity.this, task.getException().getMessage());
                         }
                     }
                 });
     }
+    public void register_user(String username){
+        DatabaseAccessOperation fetchGroupIdOperation = new DatabaseAccessOperation(this, "register", null, null, null);
+        fetchGroupIdOperation.setOnTaskCompleteListener(this);
+        fetchGroupIdOperation.execute(username);
+    }
 
+    @Override
+    public void onTaskComplete(int result) {
+        if (result == 0) {
+            Toast.makeText(this, "Record inserted successfully", Toast.LENGTH_SHORT).show();
+
+        } else {
+            Toast.makeText(this, "Failed to insert record", Toast.LENGTH_SHORT).show();
+        }
+    }
 
 }
