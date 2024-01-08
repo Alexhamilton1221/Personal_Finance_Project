@@ -24,6 +24,14 @@ public class SelectInsertActivity extends AppCompatActivity {
                 manual_insert();
             }
         });
+
+        upc_code.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                upc_insert();
+            }
+        });
+
     }
     private void setupUIViews(){
         manual = (Button) findViewById(R.id.buttonManual);
@@ -36,9 +44,14 @@ public class SelectInsertActivity extends AppCompatActivity {
         intent.putExtra("userEmail", userEmail);
         startActivity(intent);
 
-
     }
 
+    private void upc_insert(){
+        String userEmail = getIntent().getStringExtra("userEmail");
+        Intent intent = new Intent(SelectInsertActivity.this, UPCReaderActivity.class);
+        intent.putExtra("userEmail", userEmail);
+        startActivity(intent);
 
+    }
 
 }

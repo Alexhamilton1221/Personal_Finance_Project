@@ -53,17 +53,29 @@ public class DatabaseAccessOperation extends AsyncTask<String, Void, Integer> {
             String password = "Chufa4677";
 
             try (Connection connection = DriverManager.getConnection(jdbcUrl, username, password)) {
-                if ("insert_shopping_item".equals(queryType)) {
-                    result = insertItemRecord(userEmails[0], connection);
+                if ("manual_insert_shopping_item".equals(queryType)) {
+
+                    String name = nameEditText.getText().toString().trim();
+                    String priceStr = priceEditText.getText().toString().trim();
+                    String quantityStr = quantityEditText.getText().toString().trim();
+
+                    result = insertItemRecord(userEmails[0], connection,name,priceStr,quantityStr);
                 } else if ("create_group".equals(queryType)) {
                     result = insertGroupRecord(userEmails[0], connection);
                 } else if ("register".equals(queryType)) {
                     result = register_user(userEmails[0], connection);
                 } else if ("join_group".equals(queryType)) {
                     result = join_group_with_gname(userEmails[0], connection);
+                } else if ("UPC_insert_shopping_item".equals(queryType)) {
+                    String name = userEmails[1];
+                    String priceStr = "0";
+                    String quantityStr = "0";
+
+                    result = insertItemRecord(userEmails[0], connection,name,priceStr,quantityStr);
 
 
-                }
+
+                    }
 
 
             }
@@ -151,17 +163,21 @@ public class DatabaseAccessOperation extends AsyncTask<String, Void, Integer> {
     }
 
 
-    private int insertItemRecord(String userEmail, Connection connection) throws SQLException {
+    private int insertItemRecord(String userEmail, Connection connection,String name,String priceStr, String quantityStr) throws SQLException {
         String query = "INSERT INTO items (item_id, group_id, name, price, quantity) VALUES (?, ?, ?, ?, ?)";
 
         int groupId = findUserGroupId(userEmail, connection);
         int newItemId = findHighestItemId(connection) + 1;
-        String name = nameEditText.getText().toString().trim();
-        String priceStr = priceEditText.getText().toString().trim();
-        String quantityStr = quantityEditText.getText().toString().trim();
+
 
         double price = Double.parseDouble(priceStr);
         int quantity = Integer.parseInt(quantityStr);
+
+        int maxTitleLength = 40;
+        if (name.length() > maxTitleLength) {
+            name = name.substring(0, maxTitleLength);
+        }
+
 
         try (PreparedStatement insertStatement = connection.prepareStatement(query)) {
             insertStatement.setInt(1, newItemId);
@@ -183,19 +199,25 @@ public class DatabaseAccessOperation extends AsyncTask<String, Void, Integer> {
             }
 
             // Log the values being used for the insert
-            Log.d("InsertShoppingItem", "Values for insert: " + newItemId + ", " + groupId + ", " + name + ", " + price + ", " + quantity);
+            Log.d("MyApp", "Values for insert: " + newItemId + ", " + groupId + ", " + name + ", " + price + ", " + quantity);
 
             // Execute the insert query
             int rowsAffected = insertStatement.executeUpdate();
 
             // Log the number of rows affected
-            Log.d("InsertShoppingItem", "Rows affected: " + rowsAffected);
+            Log.d("MyApp", "Rows affected: " + rowsAffected);
 
             // Check if the insertion was successful
             return 0;
         }
-
+    catch (SQLException e) {
+        e.printStackTrace();  // Log the full stack trace
+        Log.d("MyApp", "Database error: " + e.getMessage());
     }
+
+        return 0;
+
+}
 
     private int insertGroupRecord(String userEmail, Connection connection) throws SQLException {
         String query = "INSERT INTO group_table (group_id, group_name) VALUES (?,?)";

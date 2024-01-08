@@ -63,7 +63,7 @@ public class ManualInsertActivity extends AppCompatActivity implements DatabaseA
         String userEmail = getIntent().getStringExtra("userEmail");
 
         // Now, you have the group ID, and you can proceed to insert the shopping item
-        DatabaseAccessOperation fetchGroupIdOperation = new DatabaseAccessOperation(this, "insert_shopping_item", nameEditText, priceEditText, quantityEditText);
+        DatabaseAccessOperation fetchGroupIdOperation = new DatabaseAccessOperation(this, "manual_insert_shopping_item", nameEditText, priceEditText, quantityEditText);
         fetchGroupIdOperation.setOnTaskCompleteListener(this);
         fetchGroupIdOperation.execute(userEmail);
         return_menu();
