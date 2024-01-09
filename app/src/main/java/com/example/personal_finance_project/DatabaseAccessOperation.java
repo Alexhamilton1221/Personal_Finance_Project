@@ -88,18 +88,17 @@ public class DatabaseAccessOperation extends AsyncTask<String, Void, Integer> {
     }
 
     private int register_user(String userEmail, Connection connection) throws SQLException {
+        String query = "INSERT INTO appuser (email, group_id) VALUES (?, ?)";
 
-        String query = "INSERT INTO appuser (email, group_id) VALUES (?,?)";
-
-
-        int groupId = 1;
+        // Always set groupId to null
+        Integer groupId = null;
 
         try (PreparedStatement insertStatement = connection.prepareStatement(query)) {
             insertStatement.setString(1, userEmail);
-            insertStatement.setInt(2, groupId);
+            insertStatement.setNull(2, java.sql.Types.INTEGER);
 
             // Log the values being used for the insert
-            Log.d("Register user", "Values for insert: " + userEmail + groupId);
+            Log.d("Register user", "Values for insert: " + userEmail + ", " + groupId);
 
             // Execute the insert query
             int rowsAffected = insertStatement.executeUpdate();
@@ -107,13 +106,12 @@ public class DatabaseAccessOperation extends AsyncTask<String, Void, Integer> {
             // Log the number of rows affected
             Log.d("InsertGroup", "Rows affected: " + rowsAffected);
 
-            // Now move current user into group
-            join_group(userEmail, groupId, connection);
+            // No need to move the current user into a group, as groupId is always null
 
             return 0;
-
         }
     }
+
 
     private int findUserGroupId(String userEmail, Connection connection) throws SQLException {
         String query = "SELECT group_id FROM `appuser` WHERE email = ?";
@@ -162,22 +160,21 @@ public class DatabaseAccessOperation extends AsyncTask<String, Void, Integer> {
         }
     }
 
-
-    private int insertItemRecord(String userEmail, Connection connection,String name,String priceStr, String quantityStr) throws SQLException {
+    private int insertItemRecord(String userEmail, Connection connection, String name, String priceStr, String quantityStr) throws SQLException {
         String query = "INSERT INTO items (item_id, group_id, name, price, quantity) VALUES (?, ?, ?, ?, ?)";
 
         int groupId = findUserGroupId(userEmail, connection);
         int newItemId = findHighestItemId(connection) + 1;
 
+        // Parse price and quantity
+        double price = parseDoubleOrDefault(priceStr, 0);
+        int quantity = parseIntOrDefault(quantityStr, 0);
 
-        double price = Double.parseDouble(priceStr);
-        int quantity = Integer.parseInt(quantityStr);
-
+        // Limit title length
         int maxTitleLength = 40;
         if (name.length() > maxTitleLength) {
             name = name.substring(0, maxTitleLength);
         }
-
 
         try (PreparedStatement insertStatement = connection.prepareStatement(query)) {
             insertStatement.setInt(1, newItemId);
@@ -210,14 +207,26 @@ public class DatabaseAccessOperation extends AsyncTask<String, Void, Integer> {
             // Check if the insertion was successful
             return 0;
         }
-    catch (SQLException e) {
-        e.printStackTrace();  // Log the full stack trace
-        Log.d("MyApp", "Database error: " + e.getMessage());
     }
 
-        return 0;
+    // Helper method to parse double or return default value
+    private double parseDoubleOrDefault(String str, double defaultValue) {
+        try {
+            return Double.parseDouble(str);
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
 
-}
+    // Helper method to parse int or return default value
+    private int parseIntOrDefault(String str, int defaultValue) {
+        try {
+            return Integer.parseInt(str);
+        } catch (NumberFormatException e) {
+            return defaultValue;
+        }
+    }
+
 
     private int insertGroupRecord(String userEmail, Connection connection) throws SQLException {
         String query = "INSERT INTO group_table (group_id, group_name) VALUES (?,?)";

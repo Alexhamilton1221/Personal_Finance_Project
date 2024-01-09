@@ -43,9 +43,6 @@ public class DatabaseAccessListView extends AsyncTask<String, Void, List<String>
                 handleGroupTabQuery(userEmails[0], dataList, connection);
             } else if ("another_tab".equals(queryType)) {
                 handleAnotherTabQuery(userEmails[0], dataList, connection);
-            } else {
-                // Handle other query types if needed
-                // ...
             }
 
             connection.close();
@@ -76,28 +73,45 @@ public class DatabaseAccessListView extends AsyncTask<String, Void, List<String>
             ResultSet emailResult = emailStatement.executeQuery();
 
             if (emailResult.next()) {
-                int groupId = emailResult.getInt("group_id");
-                Log.d("MyApp", "Group ID for Email " + userEmail + ": " + groupId);
+                Integer groupId = emailResult.getInt("group_id");
 
-                String userQuery = "SELECT * FROM appuser WHERE group_id=? ORDER BY group_id";
+                if (emailResult.wasNull()) {
+                    groupId = -1;
+                }
+                if (groupId == null || groupId.equals(-1)) {
+                    // User is not in a group, add a special entry
+                    String notInGroupItem = "User is not in a group";
+                    dataList.add(notInGroupItem);
+                } else {
+                    // User is in a group, retrieve user information
+                    String userQuery = "SELECT * FROM appuser WHERE group_id=? ORDER BY group_id";
 
-                try (PreparedStatement userStatement = connection.prepareStatement(userQuery)) {
-                    userStatement.setInt(1, groupId);
-                    ResultSet resultSet = userStatement.executeQuery();
+                    try (PreparedStatement userStatement = connection.prepareStatement(userQuery)) {
+                        userStatement.setInt(1, groupId);
+                        ResultSet resultSet = userStatement.executeQuery();
 
-                    while (resultSet.next()) {
-                        String userEmailResult = resultSet.getString("email");
-                        int userGroupId = resultSet.getInt("group_id");
+                        while (resultSet.next()) {
+                            String userEmailResult = resultSet.getString("email");
+                            int userGroupId = resultSet.getInt("group_id");
 
-                        String item = "Email: " + userEmailResult + ", Group ID: " + userGroupId;
-                        dataList.add(item);
+                            String item = "Email: " + userEmailResult + ", Group ID: " + userGroupId;
+                            dataList.add(item);
+                        }
                     }
                 }
+            } else {
+                // No result found for user email
+                Log.d("MyApp", "No result found for user email: " + userEmail);
             }
 
             emailResult.close();
+        } catch (SQLException e) {
+            Log.e("MyApp", "Error handling group tab query: " + e.getMessage());
+            throw e;
         }
     }
+
+
 
     private void handleAnotherTabQuery(String userEmail, List<String> dataList, Connection connection) {
         // Implement logic for another query type
