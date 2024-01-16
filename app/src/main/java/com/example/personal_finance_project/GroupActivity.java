@@ -8,6 +8,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 public class GroupActivity extends AppCompatActivity {
 
     private ListView list_group;
@@ -23,6 +26,9 @@ public class GroupActivity extends AppCompatActivity {
 
         // Retrieve user's email from Intent
         userEmail = getIntent().getStringExtra("userEmail");
+
+
+
 
         DatabaseAccessListView databaseAccessListView = new DatabaseAccessListView(this, list_group, "group_tab");
         databaseAccessListView.execute(userEmail);
@@ -42,6 +48,8 @@ public class GroupActivity extends AppCompatActivity {
         DatabaseAccessListView databaseAccessListView = new DatabaseAccessListView(this, list_group, "group_tab");
         databaseAccessListView.execute(userEmail);
     }
+
+
 
     private void return_menu() {
         startActivity(new Intent(GroupActivity.this, MenuActivity.class));

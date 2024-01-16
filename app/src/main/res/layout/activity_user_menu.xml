@@ -35,7 +35,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTitleWelcome"
-        app:layout_constraintWidth_percent="0.33"
+        app:layout_constraintWidth_percent="0.45"
         />
 
     <!-- View Group Button -->
@@ -48,7 +48,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonViewList"
-        app:layout_constraintWidth_percent="0.33"
+        app:layout_constraintWidth_percent="0.45"
         />
 
     <!-- Join Group Button -->
@@ -61,7 +61,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonViewGroup"
-        app:layout_constraintWidth_percent="0.33"
+        app:layout_constraintWidth_percent="0.45"
         />
 
 
@@ -75,7 +75,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/buttonJoinGroup"
-        app:layout_constraintWidth_percent="0.33"
+        app:layout_constraintWidth_percent="0.45"
         />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

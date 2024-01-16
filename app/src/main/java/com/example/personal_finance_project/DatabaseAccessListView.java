@@ -7,6 +7,9 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -41,8 +44,6 @@ public class DatabaseAccessListView extends AsyncTask<String, Void, List<String>
 
             if ("group_tab".equals(queryType)) {
                 handleGroupTabQuery(userEmails[0], dataList, connection);
-            } else if ("another_tab".equals(queryType)) {
-                handleAnotherTabQuery(userEmails[0], dataList, connection);
             }
 
             connection.close();
@@ -83,8 +84,8 @@ public class DatabaseAccessListView extends AsyncTask<String, Void, List<String>
                     String notInGroupItem = "User is not in a group";
                     dataList.add(notInGroupItem);
                 } else {
-                    // User is in a group, retrieve user information
-                    String userQuery = "SELECT * FROM appuser WHERE group_id=? ORDER BY group_id";
+                    // User is in a group, retrieve user information from Firebase
+                    String userQuery = "SELECT email FROM appuser WHERE group_id=? ORDER BY group_id";
 
                     try (PreparedStatement userStatement = connection.prepareStatement(userQuery)) {
                         userStatement.setInt(1, groupId);
@@ -92,10 +93,7 @@ public class DatabaseAccessListView extends AsyncTask<String, Void, List<String>
 
                         while (resultSet.next()) {
                             String userEmailResult = resultSet.getString("email");
-                            int userGroupId = resultSet.getInt("group_id");
-
-                            String item = "Email: " + userEmailResult + ", Group ID: " + userGroupId;
-                            dataList.add(item);
+                            dataList.add(userEmailResult);
                         }
                     }
                 }
@@ -111,10 +109,4 @@ public class DatabaseAccessListView extends AsyncTask<String, Void, List<String>
         }
     }
 
-
-
-    private void handleAnotherTabQuery(String userEmail, List<String> dataList, Connection connection) {
-        // Implement logic for another query type
-        // ...
-    }
 }

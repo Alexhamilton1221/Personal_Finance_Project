@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:text="Select Group Choice"
         android:textSize="24sp"
-        android:layout_marginTop="150dp"
+        android:layout_marginTop="200dp"
         app:fontFamily="@font/spartanbold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

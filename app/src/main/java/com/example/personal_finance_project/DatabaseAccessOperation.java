@@ -171,7 +171,7 @@ public class DatabaseAccessOperation extends AsyncTask<String, Void, Integer> {
         int quantity = parseIntOrDefault(quantityStr, 0);
 
         // Limit title length
-        int maxTitleLength = 40;
+        int maxTitleLength = 30;
         if (name.length() > maxTitleLength) {
             name = name.substring(0, maxTitleLength);
         }

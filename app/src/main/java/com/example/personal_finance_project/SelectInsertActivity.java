@@ -9,7 +9,7 @@ import android.widget.Button;
 
 public class SelectInsertActivity extends AppCompatActivity {
 
-    private Button manual,upc_code;
+    private Button manual,upc_code,back;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,12 +32,23 @@ public class SelectInsertActivity extends AppCompatActivity {
             }
         });
 
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                return_menu();
+            }
+        });
+
     }
     private void setupUIViews(){
         manual = (Button) findViewById(R.id.buttonManual);
         upc_code = (Button) findViewById(R.id.buttonUPC);
+        back = (Button) findViewById(R.id.buttonBack);
     }
 
+    private void return_menu(){
+        startActivity(new Intent(SelectInsertActivity.this, MenuActivity.class));
+    }
     private void manual_insert(){
         String userEmail = getIntent().getStringExtra("userEmail");
         Intent intent = new Intent(SelectInsertActivity.this, ManualInsertActivity.class);

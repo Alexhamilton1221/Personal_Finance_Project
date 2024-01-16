@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -15,6 +16,7 @@
         android:text="Item"
         android:textSize="24sp"
         android:layout_marginTop="150dp"
+        android:maxLength="30"
         app:fontFamily="@font/spartanbold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -33,7 +35,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         tools:ignore="UnknownIdInLayout" />
 
-
     <!-- Cancel Button -->
     <Button
         android:id="@+id/buttonCancel"
@@ -44,10 +45,4 @@
         app:layout_constraintEnd_toStartOf="@+id/buttonAdd"
         app:layout_constraintTop_toBottomOf="@+id/textViewDisplayItem"
         app:layout_constraintBottom_toBottomOf="parent" />
-
-
-
-
-
-
 </androidx.constraintlayout.widget.ConstraintLayout>

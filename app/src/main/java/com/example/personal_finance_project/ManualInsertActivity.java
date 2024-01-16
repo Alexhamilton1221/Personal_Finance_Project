@@ -54,7 +54,7 @@ public class ManualInsertActivity extends AppCompatActivity implements DatabaseA
         Intent refreshIntent = new Intent("refresh_list_action");
         sendBroadcast(refreshIntent);
 
-        startActivity(new Intent(ManualInsertActivity.this, ViewListActivity.class));
+        startActivity(new Intent(ManualInsertActivity.this, MenuActivity.class));
 
     }
 
